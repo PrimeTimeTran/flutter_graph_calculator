@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'dart:ui';
+
 import 'package:graph_calculator/models/models.dart';
 
 /// Represents a mathematical function that can be drawn on a graph.
@@ -19,31 +21,32 @@ class GraphFunction {
 
   /// Draws the graph of the function on the given [canvas] with the provided [size] and [graph] settings.
   void draw(Canvas canvas, Size size, Graph graph) {
-    List<Offset> points = [];
-    for (double i = -((size.width / 2) - graph.focusPoint.x) / graph.gridStep;
-        i < ((size.width / 2) + graph.focusPoint.x) / graph.gridStep;
-        i += 0.005) {
-      if (!(-function(i) * graph.gridStep).isNaN) {
-        points.add(Offset(i * graph.gridStep, -function(i) * graph.gridStep));
-      }
+    // Pre-calculate constants
+    final double leftLimit =
+        -((size.width / 2) - graph.focusPoint.x) / graph.gridStep;
+    final double rightLimit =
+        ((size.width / 2) + graph.focusPoint.x) / graph.gridStep;
+    final double halfHeight = size.height / 2;
+
+    // Pre-compute points
+    final List<Offset> precomputedPoints = [];
+    for (double i = leftLimit; i < rightLimit; i += 0.005) {
+      final double y = function(i) * graph.gridStep;
+      precomputedPoints.add(Offset(i * graph.gridStep, -y));
     }
 
     List<Offset> path = [];
     bool isContinue = false;
     int counter = 1;
-    for (var point in points) {
-      if (point.dy < ((size.height / 2) + graph.focusPoint.y) &&
-          point.dy > -((size.height / 2) - graph.focusPoint.y)) {
+    for (var point in precomputedPoints) {
+      // Combine checks for visibility
+      if (point.dy.abs() < halfHeight) {
         if (!isContinue) {
-          if (!(counter - 2).isNegative) {
-            path.add(points[counter - 2]);
-          }
+          // No need to check for negative counter
+          path.add(precomputedPoints.elementAt(max(0, counter - 2)));
           isContinue = true;
         }
         path.add(point);
-        if (counter == points.length) {
-          canvas.drawPoints(PointMode.polygon, path, paint);
-        }
       } else {
         if (isContinue) {
           path.add(point);
@@ -53,6 +56,10 @@ class GraphFunction {
         }
       }
       counter++;
+    }
+    // Draw the last path if any
+    if (isContinue) {
+      canvas.drawPoints(PointMode.polygon, path, paint);
     }
   }
 }
