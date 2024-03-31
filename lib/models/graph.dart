@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graph_calculator/models/models.dart';
+import 'package:flutter_graph_calculator/models/models.dart';
 
 /// Represents a graph configuration and settings.
 class Graph {

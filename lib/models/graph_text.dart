@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:graph_calculator/models/models.dart';
+import 'package:flutter_graph_calculator/models/models.dart';
 
 /// Represents a text element that can be drawn on a canvas.
 class GraphText extends DrawableObject {

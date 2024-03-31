@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:graph_calculator/graph_calculator.dart';
+import 'package:flutter_graph_calculator/flutter_graph_calculator.dart';
 
 void main() {
   runApp(const MyApp());
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
 }
 
 class MyApp extends StatelessWidget {
@@ -19,13 +26,6 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
     );
   }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {

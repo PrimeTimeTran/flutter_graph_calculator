@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:graph_calculator/models/models.dart';
+import 'package:flutter_graph_calculator/models/models.dart';
 
 /// Represents a mathematical function that can be drawn on a graph.
 class GraphFunction {

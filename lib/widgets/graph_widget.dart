@@ -1,6 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:graph_calculator/controllers/graph_controller.dart';
-import 'package:graph_calculator/models/models.dart';
+import 'package:flutter_graph_calculator/controllers/graph_controller.dart';
+import 'package:flutter_graph_calculator/models/models.dart';
+
+/// A custom painter for drawing a graph.
+class GraphPainter extends CustomPainter {
+  GraphOffset focusPoint;
+  final Graph graph;
+  final GraphController controller;
+
+  /// Creates a [GraphPainter] with the specified [focusPoint], [graph], and [controller].
+  GraphPainter({
+    required this.focusPoint,
+    required this.graph,
+    required this.controller,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.clipRect(
+        Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
+    var xAddition = focusPoint.x;
+    var yAddition = focusPoint.y;
+    canvas.translate(size.width / 2 - xAddition, size.height / 2 - yAddition);
+    if (graph.drawAxes) controller.drawAxes(canvas, size);
+    if (graph.drawNumbers) controller.addNumbers(canvas, size);
+    controller.drawObjects(canvas, size);
+    controller.drawFunctions(canvas, size);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
 
 /// A widget that displays a graph using a custom painter.
 class GraphWidget extends StatefulWidget {
@@ -44,37 +76,5 @@ class _GraphWidgetState extends State<GraphWidget> {
         ),
       ),
     );
-  }
-}
-
-/// A custom painter for drawing a graph.
-class GraphPainter extends CustomPainter {
-  GraphOffset focusPoint;
-  final Graph graph;
-  final GraphController controller;
-
-  /// Creates a [GraphPainter] with the specified [focusPoint], [graph], and [controller].
-  GraphPainter({
-    required this.focusPoint,
-    required this.graph,
-    required this.controller,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.clipRect(
-        Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height)));
-    var xAddition = focusPoint.x;
-    var yAddition = focusPoint.y;
-    canvas.translate(size.width / 2 - xAddition, size.height / 2 - yAddition);
-    if (graph.drawAxes) controller.drawAxes(canvas, size);
-    if (graph.drawNumbers) controller.addNumbers(canvas, size);
-    controller.drawObjects(canvas, size);
-    controller.drawFunctions(canvas, size);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

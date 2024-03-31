@@ -3,7 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:graph_calculator/models/models.dart';
+import 'package:flutter_graph_calculator/models/models.dart';
 
 /// The [GraphController] class controls a graph.
 class GraphController {
